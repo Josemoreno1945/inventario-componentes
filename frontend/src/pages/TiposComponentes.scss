@@ -1,0 +1,135 @@
+// TiposComponentes.scss
+
+.clase-tipos {
+  // 1. TARJETA (CARD) DE LA LISTA
+  .card {
+    background-color: #0d1117 !important;
+    border: 1px solid rgba(100, 231, 255, 0.3) !important;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+    color: #ffffff;
+
+    .card-body {
+      background: transparent !important;
+    }
+  }
+
+  // 2. TABLA DE CATEGORÍAS
+  .table {
+    color: #e6edf3 !important;
+    --cui-table-bg: transparent !important;
+    --cui-table-border-color: rgba(100, 231, 255, 0.1) !important;
+
+    thead th {
+      background-color: rgba(100, 231, 255, 0.05) !important;
+      color: #64e7ff !important;
+      border-bottom: 2px solid rgba(100, 231, 255, 0.2) !important;
+      text-transform: uppercase;
+      font-size: 0.85rem;
+      letter-spacing: 0.5px;
+    }
+
+    tbody td {
+      background: transparent !important;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.05) !important;
+      color: #ffffff !important;
+      padding: 1rem 0.75rem;
+
+      // Forzar blanco en todo el contenido de la celda
+      * {
+        color: #ffffff !important;
+      }
+      
+      // Resalte para el ID
+      strong {
+        color: #64e7ff !important;
+        font-family: monospace;
+      }
+    }
+
+    tr:hover td {
+      background-color: rgba(100, 231, 255, 0.03) !important;
+    }
+  }
+
+  // 3. BOTÓN "NUEVO TIPO"
+  .btn-primary {
+    background: rgba(100, 231, 255, 0.1) !important;
+    border: 1px solid rgba(100, 231, 255, 0.5) !important;
+    color: #64e7ff !important;
+    border-radius: 8px !important;
+    font-weight: 600;
+    padding: 8px 20px;
+    transition: all 0.3s ease;
+
+    &:hover {
+      background: rgba(100, 231, 255, 0.2) !important;
+      box-shadow: 0 0 15px rgba(100, 231, 255, 0.4) !important;
+      color: #ffffff !important;
+      transform: translateY(-1px);
+    }
+  }
+
+  h2 {
+    color: #ffffff;
+    font-weight: 600;
+    text-shadow: 0 0 10px rgba(100, 231, 255, 0.2);
+  }
+}
+
+// 4. ESTILOS DEL MODAL (CATEGORÍA NUEVA)
+.modal-content {
+  background-color: #0d1117 !important;
+  border: 1px solid #64e7ff !important;
+  border-radius: 15px;
+  color: #ffffff !important;
+
+  .modal-header {
+    border-bottom: 1px solid rgba(100, 231, 255, 0.1) !important;
+    .modal-title { color: #64e7ff !important; font-weight: 600; }
+    .btn-close { filter: invert(1); } // Hace la X blanca
+  }
+
+  .modal-footer {
+    border-top: 1px solid rgba(100, 231, 255, 0.1) !important;
+    
+    .btn-secondary {
+      background: transparent;
+      border: 1px solid #444;
+      color: #888;
+      border-radius: 8px;
+      &:hover { color: #fff; border-color: #666; }
+    }
+
+    .btn-primary {
+      background: #64e7ff !important;
+      color: #000 !important; // Texto oscuro para contraste en el botón de guardado final
+      border: none !important;
+      font-weight: 700;
+      border-radius: 8px;
+      &:hover { background: #b0f2ff !important; box-shadow: 0 0 12px #64e7ff; }
+    }
+  }
+
+  // Campo de texto del modal
+  .form-control {
+    background-color: #161b22 !important;
+    border: 1px solid rgba(100, 231, 255, 0.2) !important;
+    color: #ffffff !important;
+    padding: 12px;
+
+    &::placeholder {
+      color: rgba(255, 255, 255, 0.4) !important;
+    }
+
+    &:focus {
+      border-color: #64e7ff !important;
+      box-shadow: 0 0 8px rgba(100, 231, 255, 0.3) !important;
+    }
+  }
+
+  .form-label {
+    color: #8b949e !important;
+    font-weight: 500;
+    margin-bottom: 8px;
+  }
+}

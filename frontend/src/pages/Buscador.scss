@@ -1,0 +1,358 @@
+:root {
+  --accent: #64e7ff;
+  --accent-glow: rgba(100, 231, 255, 0.35);
+}
+
+.results-table tbody td * {
+  color: #ffffff !important;
+}
+
+.buscador-page .form-control::placeholder {
+  color: rgba(255, 255, 255, 0.4) !important;
+}
+
+/* Forzar que las opciones dentro de los select sean legibles */
+.buscador-page .form-select option {
+  background-color: #0a121d !important; /* Fondo oscuro para que se lea el texto blanco */
+  color: #ffffff !important;
+}
+
+.buscador-page {
+  display: flex;
+  flex-direction: column;
+  gap: 28px;
+  padding: 32px 20px 48px;
+  align-items: center;
+  color: #ffffff;
+  /* Fondo general adaptado al estilo dark/neon */
+  background: radial-gradient(circle at top, rgba(100, 231, 255, 0.05), transparent 25%),
+              linear-gradient(180deg, #090f1a 0%, #050913 100%);
+  min-height: 100vh;
+}
+
+.buscador-hero {
+  max-width: 940px;
+  width: 100%;
+  text-align: center;
+  margin-bottom: 10px;
+}
+
+.buscador-hero h1 {
+  margin: 0;
+  font-size: clamp(2rem, 3vw, 3rem);
+  line-height: 1.05;
+  color: #ffffff;
+  text-shadow: 0 0 20px var(--accent-glow);
+  font-weight: 600;
+}
+
+.buscador-description {
+  margin: 18px auto 0;
+  max-width: 740px;
+  color: rgba(232, 247, 255, 0.82);
+  font-size: 1.05rem;
+  line-height: 1.6;
+}
+
+/* --- ESTILO DE LAS CCARD (El nuevo diseño) --- */
+/* --- ESTILO DE LAS CCARD (Forzando a CoreUI) --- */
+.buscador-card.card,
+.results-card.card {
+  /* Añadimos !important para romper los valores por defecto de CoreUI */
+  background: rgba(10, 18, 29, 0.88) !important;
+  border: 1px solid rgba(100, 231, 255, 0.55) !important;
+  
+  width: min(100%, 980px);
+  margin: 0 auto;
+  border-radius: 32px;
+  overflow: hidden;
+  box-shadow: 0 0 0 1px rgba(100, 231, 255, 0.08), 
+              0 20px 90px rgba(9, 17, 27, 0.65), 
+              0 0 36px rgba(100, 231, 255, 0.22);
+  position: relative;
+  color: #ffffff;
+}
+
+.buscador-card::before,
+.results-card::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(circle at top left, rgba(100, 231, 255, 0.18), transparent 40%);
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* Efecto de la cuadrícula de fondo en las cards */
+.buscador-grid {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  grid-template-columns: repeat(8, 1fr);
+  grid-template-rows: repeat(8, 1fr);
+  opacity: 0.25;
+  pointer-events: none;
+  z-index: 0;
+}
+
+.buscador-grid span {
+  border: 1px solid rgba(100, 231, 255, 0.1);
+}
+
+/* Asegurar que el contenido de CoreUI esté por encima de los fondos absolutos */
+.card-body {
+  position: relative;
+  z-index: 1;
+  padding: 32px;
+}
+
+.buscador-form {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.buscador-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 14px;
+  justify-content: center;
+  align-items: stretch;
+}
+
+.search-input-group {
+  display: flex;
+  flex: 1 1 620px;
+  min-width: 280px;
+  gap: 12px;
+  align-items: center;
+}
+
+/* --- ADAPTACIÓN DE INPUTS COREUI AL MODO OSCURO --- */
+.buscador-page .form-control,
+.buscador-page .form-select {
+  background-color: rgba(10, 18, 29, 0.6) !important;
+  border: 1px solid rgba(100, 231, 255, 0.3) !important;
+  color: #e9f9ff !important;
+  border-radius: 12px;
+}
+
+.buscador-page .form-control:focus,
+.buscador-page .form-select:focus {
+  background-color: rgba(10, 18, 29, 0.9) !important;
+  border-color: var(--accent) !important;
+  box-shadow: 0 0 15px rgba(100, 231, 255, 0.2) !important;
+  color: #ffffff !important;
+}
+
+.buscador-page .form-label {
+  color: rgba(232, 247, 255, 0.82);
+  font-weight: 500;
+}
+
+/* Input principal de búsqueda */
+.search-input {
+  flex: 1;
+  min-width: 0;
+  border-radius: 999px !important;
+  padding: 16px 20px;
+  font-size: 1rem;
+}
+
+.search-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 56px;
+  height: 56px;
+  border-radius: 18px;
+  background: linear-gradient(135deg, rgba(100, 231, 255, 0.24), rgba(27, 80, 127, 0.32));
+  color: #ffffff;
+  border: 1px solid rgba(100, 231, 255, 0.45);
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 0 15px rgba(100, 231, 255, 0.1);
+}
+
+.search-button:hover {
+  transform: translateY(-2px);
+  border-color: var(--accent);
+  box-shadow: 0 0 25px rgba(100, 231, 255, 0.3);
+  background: rgba(100, 231, 255, 0.2);
+}
+
+/* --- ESTILOS DE BOTONES COREUI (Filtros, Limpiar) --- */
+.buscador-page .btn {
+  border-radius: 999px;
+  padding: 0.6rem 1.5rem;
+  transition: all 0.3s ease;
+  font-weight: 600;
+  letter-spacing: 0.05em;
+}
+
+.buscador-page .btn-secondary {
+  background: linear-gradient(135deg, rgba(100, 231, 255, 0.24), rgba(27, 80, 127, 0.32));
+  border: 1px solid rgba(100, 231, 255, 0.35);
+  color: #ffffff;
+  box-shadow: 0 0 10px rgba(100, 231, 255, 0.1);
+}
+
+.buscador-page .btn-secondary:hover {
+  background: rgba(100, 231, 255, 0.15);
+  border-color: var(--accent);
+  box-shadow: 0 0 20px rgba(100, 231, 255, 0.25);
+  color: var(--accent);
+}
+
+.buscador-page .btn-outline-secondary {
+  background: transparent;
+  border: 1px solid rgba(100, 231, 255, 0.35);
+  color: var(--accent);
+}
+
+.buscador-page .btn-outline-secondary:hover {
+  background: rgba(100, 231, 255, 0.1);
+  border-color: var(--accent);
+  box-shadow: 0 0 15px rgba(100, 231, 255, 0.2);
+  color: #ffffff;
+}
+
+.filter-toggle {
+  min-width: 140px;
+  height: 56px;
+}
+
+/* --- PANEL DE FILTROS --- */
+.filter-panel {
+  border: 1px solid rgba(100, 231, 255, 0.2);
+  border-radius: 22px;
+  padding: 24px;
+  background: rgba(8, 14, 24, 0.6);
+  box-shadow: inset 0 0 0 1px rgba(100, 231, 255, 0.05);
+}
+
+.filter-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(220px, 1fr));
+  gap: 16px;
+  margin-bottom: 20px;
+}
+
+.filter-checkbox-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 0 16px;
+  border-radius: 12px;
+  border: 1px solid rgba(100, 231, 255, 0.2);
+  min-height: 64px;
+  background: rgba(10, 18, 29, 0.4);
+}
+
+.filter-checkbox-row label {
+  color: rgba(232, 247, 255, 0.9);
+  cursor: pointer;
+  margin: 0;
+}
+
+.quantity-inputs {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+}
+
+.filter-actions {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  border-top: 1px solid rgba(100, 231, 255, 0.15);
+  padding-top: 20px;
+}
+
+.filter-helper {
+  color: rgba(100, 231, 255, 0.6);
+  font-size: 0.9rem;
+}
+
+/* --- TABLA DE RESULTADOS --- */
+.error-message,
+.empty-results {
+  margin: 0;
+  color: var(--accent);
+  font-size: 1.1rem;
+  text-align: center;
+  padding: 20px;
+}
+
+.results-table-wrapper {
+  overflow-x: auto;
+  border-radius: 12px;
+  border: 1px solid rgba(100, 231, 255, 0.15);
+  background: rgba(8, 14, 24, 0.4);
+}
+
+.results-table {
+  width: 100%;
+  border-collapse: collapse;
+  min-width: 740px;
+  color: #ffffff;
+}
+
+.results-table th,
+.results-table td {
+  padding: 16px;
+  text-align: left;
+  border-bottom: 1px solid rgba(100, 231, 255, 0.1);
+  vertical-align: middle;
+}
+
+.results-table th {
+  color: var(--accent);
+  font-weight: 600;
+  text-transform: uppercase;
+  font-size: 0.85rem;
+  letter-spacing: 0.05em;
+  background: rgba(100, 231, 255, 0.05);
+}
+
+.results-table tbody tr {
+  transition: background 0.2s ease;
+}
+
+.results-table tbody tr:hover {
+  background: rgba(100, 231, 255, 0.1);
+}
+
+.text-muted {
+  color: rgba(232, 247, 255, 0.6) !important;
+}
+
+/* --- RESPONSIVE --- */
+@media (max-width: 920px) {
+  .filter-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 760px) {
+  .buscador-page {
+    padding: 24px 14px 32px;
+  }
+
+  .search-input-group {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .search-button,
+  .filter-toggle {
+    width: 100%;
+    height: 52px;
+  }
+  
+  .card-body {
+    padding: 20px;
+  }
+}

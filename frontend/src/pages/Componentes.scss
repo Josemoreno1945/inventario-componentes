@@ -1,0 +1,143 @@
+// Componentes.scss
+
+.clase-componentes {
+  // 1. TARJETA PRINCIPAL
+  .card {
+    background-color: #0d1117 !important;
+    border: 1px solid rgba(100, 231, 255, 0.3) !important;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+    color: #ffffff;
+
+    .card-body {
+      background: transparent !important;
+    }
+  }
+
+  // 2. TABLA DE COMPONENTES
+  .table {
+    color: #e6edf3 !important;
+    --cui-table-bg: transparent !important;
+    --cui-table-border-color: rgba(100, 231, 255, 0.1) !important;
+
+    thead th {
+      background-color: rgba(100, 231, 255, 0.05) !important;
+      color: #64e7ff !important;
+      border-bottom: 2px solid rgba(100, 231, 255, 0.2) !important;
+      text-transform: uppercase;
+      font-size: 0.8rem;
+    }
+
+    tbody td {
+      background: transparent !important;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.05) !important;
+      color: #ffffff !important;
+
+      // Forzar que todo lo interno sea blanco (como pediste)
+      * {
+        color: #ffffff !important;
+      }
+
+      // Excepción para el texto muted (especificaciones)
+      .text-muted {
+        color: rgba(255, 255, 255, 0.5) !important;
+      }
+    }
+
+    tr:hover td {
+      background-color: rgba(100, 231, 255, 0.03) !important;
+    }
+  }
+
+  // 3. BADGES (Etiquetas de Tipo y Cantidad)
+  .badge {
+    border: 1px solid rgba(100, 231, 255, 0.3);
+    background-color: rgba(100, 231, 255, 0.1) !important;
+    color: #64e7ff !important;
+    font-weight: 500;
+    
+    &.bg-danger {
+      background-color: rgba(255, 100, 100, 0.1) !important;
+      border-color: rgba(255, 100, 100, 0.4);
+      color: #ff6464 !important;
+    }
+    
+    &.bg-success {
+      background-color: rgba(100, 255, 150, 0.1) !important;
+      border-color: rgba(100, 255, 150, 0.4);
+      color: #64ff96 !important;
+    }
+  }
+
+  // 4. BOTÓN "NUEVO COMPONENTE"
+  .btn-primary {
+    background: rgba(100, 231, 255, 0.1) !important;
+    border: 1px solid rgba(100, 231, 255, 0.5) !important;
+    color: #64e7ff !important;
+    border-radius: 8px !important;
+    font-weight: 600;
+    padding: 8px 20px;
+    transition: all 0.3s ease;
+
+    &:hover {
+      background: rgba(100, 231, 255, 0.2) !important;
+      box-shadow: 0 0 15px rgba(100, 231, 255, 0.4) !important;
+      color: #ffffff !important;
+    }
+  }
+
+  h2 {
+    color: #ffffff;
+    text-shadow: 0 0 10px rgba(100, 231, 255, 0.2);
+  }
+}
+
+// 5. ESTILOS DEL MODAL Y FORMULARIO (Fuera del container principal)
+.modal-content {
+  background-color: #0d1117 !important;
+  border: 1px solid #64e7ff !important;
+  color: #ffffff !important;
+  border-radius: 15px;
+
+  .modal-header {
+    border-bottom: 1px solid rgba(100, 231, 255, 0.1) !important;
+    .modal-title { color: #64e7ff !important; }
+    .btn-close { filter: invert(1); }
+  }
+
+  .modal-footer {
+    border-top: 1px solid rgba(100, 231, 255, 0.1) !important;
+    .btn-secondary {
+      background: transparent;
+      border: 1px solid #444;
+      color: #888;
+      &:hover { color: #fff; border-color: #666; }
+    }
+  }
+
+  // Inputs y Selects dentro del modal
+  .form-control, .form-select {
+    background-color: #161b22 !important;
+    border: 1px solid rgba(100, 231, 255, 0.2) !important;
+    color: #ffffff !important;
+
+    &::placeholder {
+      color: rgba(255, 255, 255, 0.4) !important;
+    }
+
+    &:focus {
+      border-color: #64e7ff !important;
+      box-shadow: 0 0 8px rgba(100, 231, 255, 0.3) !important;
+    }
+
+    // Estilo para las opciones del select
+    option {
+      background-color: #0d1117;
+      color: #ffffff;
+    }
+  }
+
+  .form-label {
+    color: #8b949e !important;
+    font-size: 0.9rem;
+  }
+}
