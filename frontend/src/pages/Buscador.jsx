@@ -325,30 +325,38 @@ export default function Buscador() {
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        {resultados.map((comp) => (
-                                            <tr key={comp.id}>
-                                                <td>#{comp.id}</td>
-                                                <td>
-                                                    <CBadge color="secondary">{comp.tipo}</CBadge>
-                                                </td>
-                                                <td>{comp.marca_modelo}</td>
-                                                <td>
-                                                    <small className="text-muted">
-                                                        {comp.interfaz} | {comp.capacidad}
-                                                    </small>
-                                                </td>
-                                                <td>
-                                                    <CBadge color={comp.cantidad > 0 ? 'success' : 'danger'}>
-                                                        {comp.cantidad} un.
-                                                    </CBadge>
-                                                </td>
-                                                <td>
-                                                    {comp.pasillo
-                                                        ? `${comp.pasillo} > ${comp.estante} > ${comp.caja}`
-                                                        : `ID Ubicación: ${comp.ubicacion_id}`}
-                                                </td>
-                                            </tr>
-                                        ))}
+{resultados.map((comp) => {
+                                            const quantity = Number(comp.cantidad || 0);
+                                            const getStockClass = (qty) => {
+                                                if (qty === 0) return 'stock-critical';
+                                                if (qty <= 5) return 'stock-low';
+                                                return 'stock-good';
+                                            };
+                                            return (
+                                                <tr key={comp.id} className={getStockClass(quantity)}>
+                                                    <td>#{comp.id}</td>
+                                                    <td>
+                                                        <CBadge color="secondary">{comp.tipo}</CBadge>
+                                                    </td>
+                                                    <td>{comp.marca_modelo}</td>
+                                                    <td>
+                                                        <small className="text-muted">
+                                                            {comp.interfaz} | {comp.capacidad}
+                                                        </small>
+                                                    </td>
+                                                    <td>
+                                                        <CBadge color={quantity === 0 ? 'danger' : quantity <= 5 ? 'warning' : 'success'}>
+                                                            {comp.cantidad} un.
+                                                        </CBadge>
+                                                    </td>
+                                                    <td>
+                                                        {comp.pasillo
+                                                            ? `${comp.pasillo} > ${comp.estante} > ${comp.caja}`
+                                                            : `ID Ubicación: ${comp.ubicacion_id}`}
+                                                    </td>
+                                                </tr>
+                                            );
+                                        })}
                                     </tbody>
                                 </table>
                             </div>

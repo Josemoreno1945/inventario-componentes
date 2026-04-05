@@ -5,15 +5,17 @@ import {
     CAlert, CModal, CModalHeader, CModalTitle, CModalBody, CModalFooter,
     CBadge
 } from '@coreui/react';
+import { CIcon } from '@coreui/icons-react';
+import { cilPencil } from '@coreui/icons';
 import './Componentes.scss';
 
 export default function Componentes() {
     // Estados para datos
     const [componentes, setComponentes] = useState([]);
-    const [ubicaciones, setUbicaciones] = useState([]); // Para el select
-    const [tipos, setTipos] = useState([]); // Para el select de tipos
+    const [ubicaciones, setUbicaciones] = useState([]);
+    const [tipos, setTipos] = useState([]);
     
-    // Estado para el formulario
+    // Estado para el formulario de creación
     const [formData, setFormData] = useState({
         tipo_id: '',
         marca_modelo: '',
@@ -22,6 +24,18 @@ export default function Componentes() {
         cantidad: '',
         ubicacion_id: ''
     });
+
+    // Estado para ajuste de cantidad
+    const [visibleAdjust, setVisibleAdjust] = useState(false);
+    const [selectedId, setSelectedId] = useState(null);
+    const [deltaInput, setDeltaInput] = useState(1);
+    const [loadingAdjust, setLoadingAdjust] = useState(false);
+
+    // Edit/Delete states
+    const [editMode, setEditMode] = useState(false);
+    const [editId, setEditId] = useState(null);
+
+    const [loading, setLoading] = useState(false);
 
     const [mensaje, setMensaje] = useState(null);
     const [visible, setVisible] = useState(false);
@@ -70,8 +84,63 @@ export default function Componentes() {
         });
     };
 
+    // Edit modal
+    const openEditModal = (comp) => {
+        setFormData({
+            tipo_id: comp.tipo_id.toString(),
+            marca_modelo: comp.marca_modelo,
+            interfaz: comp.interfaz || '',
+            capacidad: comp.capacidad || '',
+            cantidad: comp.cantidad.toString(),
+            ubicacion_id: comp.ubicacion_id.toString()
+        });
+        setEditId(comp.id);
+        setEditMode(true);
+        setVisible(true);
+    };
+
+    const handleUpdate = async (e) => {
+        e.preventDefault();
+        if (!editId) return;
+        setMensaje(null);
+        setLoading(true);
+
+        try {
+            const response = await fetch(`http://localhost:5000/api/componentes/${editId}`, {
+                method: 'PUT',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(formData),
+            });
+
+            const result = await response.json();
+
+            if (!response.ok) {
+                setMensaje({ tipo: 'danger', texto: result.error || 'Error al actualizar' });
+                return;
+            }
+
+            setMensaje({ tipo: 'success', texto: 'Componente actualizado' });
+            setVisible(false);
+            setEditMode(false);
+            setEditId(null);
+            fetchComponentes();
+            setTimeout(() => setMensaje(null), 3000);
+        } catch (error) {
+            setMensaje({ tipo: 'danger', texto: 'Error de conexión' });
+        } finally {
+            setLoading(false);
+        }
+    };
+
+    // Delete
+    // No delete functionality
+
     const handleSubmit = async (e) => {
         e.preventDefault();
+        if (editMode) {
+            await handleUpdate(e);
+            return;
+        }
         setMensaje(null);
 
         try {
@@ -105,6 +174,56 @@ export default function Componentes() {
                 texto: 'No se pudo conectar con el servidor.',
                 details: [],
             });
+        }
+    };
+
+    // Funciones para ajustar cantidad
+    const openAdjustModal = (id) => {
+        setSelectedId(id);
+        setDeltaInput(1);
+        setVisibleAdjust(true);
+    };
+
+    const handleAdjust = async (operation) => {
+        if (!selectedId) return;
+        
+        const delta = operation === 'increase' ? Math.abs(deltaInput) : -Math.abs(deltaInput);
+        setLoadingAdjust(true);
+        setMensaje(null);
+
+        try {
+            const response = await fetch(`http://localhost:5000/api/componentes/${selectedId}/cantidad`, {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ delta }),
+            });
+
+            const result = await response.json();
+
+            if (!response.ok) {
+                setMensaje({
+                    tipo: 'danger',
+                    texto: result.error || 'Error al ajustar cantidad.',
+                });
+                return;
+            }
+
+            setMensaje({ 
+                tipo: 'success', 
+                texto: `Cantidad ${operation === 'increase' ? 'aumentada' : 'restada'}: ${result.componente.cantidad} un.` 
+            });
+            setVisibleAdjust(false);
+            fetchComponentes(); // Refresh list
+            setTimeout(() => setMensaje(null), 3000);
+        } catch (error) {
+            setMensaje({
+                tipo: 'danger',
+                texto: 'No se pudo conectar con el servidor.',
+            });
+        } finally {
+            setLoadingAdjust(false);
         }
     };
 
@@ -147,6 +266,7 @@ export default function Componentes() {
                                         <CTableHeaderCell>Especif.</CTableHeaderCell>
                                         <CTableHeaderCell>Cant.</CTableHeaderCell>
                                         <CTableHeaderCell>Ubicación</CTableHeaderCell>
+
                                     </CTableRow>
                                 </CTableHead>
                                 <CTableBody>
@@ -168,12 +288,47 @@ export default function Componentes() {
                                                     </small>
                                                 </CTableDataCell>
                                                 <CTableDataCell>
-                                                    <CBadge color={comp.cantidad > 0 ? 'success' : 'danger'}>
-                                                        {comp.cantidad} un.
-                                                    </CBadge>
+                                                    <div className="d-flex align-items-center gap-2">
+                                                        <CBadge color={comp.cantidad > 0 ? 'success' : 'danger'}>
+                                                            {comp.cantidad} un.
+                                                        </CBadge>
+                                                        <div className="btn-group btn-group-sm" role="group">
+                                                            <CButton 
+                                                                color="success" 
+                                                                size="sm" 
+                                                                onClick={() => openAdjustModal(comp.id)}
+                                                                title="Aumentar cantidad"
+                                                            >
+                                                                ➕
+                                                            </CButton>
+                                                            {comp.cantidad > 0 && (
+                                                                <CButton 
+                                                                    color="danger" 
+                                                                    size="sm" 
+                                                                    onClick={() => openAdjustModal(comp.id)}
+                                                                    title="Restar cantidad"
+                                                                >
+                                                                    ➖
+                                                                </CButton>
+                                                            )}
+                                                        </div>
+                                                    </div>
                                                 </CTableDataCell>
                                                 <CTableDataCell>
-                                                    {comp.pasillo ? `${comp.pasillo} > ${comp.estante} > ${comp.caja}` : `ID Ubicación: ${comp.ubicacion_id}`}
+{comp.pasillo ? `${comp.pasillo} > ${comp.estante} > ${comp.caja}` : `ID Ubicación: ${comp.ubicacion_id}`}
+                                                </CTableDataCell>
+                                                <CTableDataCell className="text-end">
+                                                    <div className="d-flex gap-1">
+                                                        <CButton 
+                                                            size="sm" 
+                                                            color="warning" 
+                                                            variant="ghost"
+                                                            onClick={() => openEditModal(comp)}
+                                                            title="Editar"
+                                                        >
+                                                            <CIcon icon={cilPencil} />
+                                                        </CButton>
+                                                    </div>
                                                 </CTableDataCell>
                                             </CTableRow>
                                         ))
@@ -188,7 +343,7 @@ export default function Componentes() {
             {/* Modal de Registro */}
             <CModal visible={visible} onClose={() => setVisible(false)} size="lg">
                 <CModalHeader onClose={() => setVisible(false)}>
-                    <CModalTitle>Registrar Nuevo Componente</CModalTitle>
+{editMode ? `Editar Componente #${editId}` : 'Registrar Nuevo Componente'}
                 </CModalHeader>
                 <CForm onSubmit={handleSubmit}>
                     <CModalBody>
@@ -262,7 +417,7 @@ export default function Componentes() {
                                     <option value="">Selecciona dónde se guardará...</option>
                                     {ubicaciones.map((ub) => (
                                         <option key={ub.id} value={ub.id}>
-                                            {ub.pasillo} &gt; {ub.estante} &gt; {ub.caja}
+                                            {`${ub.pasillo} > ${ub.estante} > ${ub.caja}`}
                                         </option>
                                     ))}
                                 </CFormSelect>
@@ -273,11 +428,59 @@ export default function Componentes() {
                         <CButton color="secondary" onClick={() => setVisible(false)}>
                             Cancelar
                         </CButton>
-                        <CButton color="primary" type="submit">
-                            Registrar Componente
+                        <CButton color="primary" type="submit" disabled={loading}>
+                            {editMode ? 'Actualizar' : 'Registrar Componente'}
                         </CButton>
                     </CModalFooter>
                 </CForm>
+            </CModal>
+
+
+
+            {/* Modal de Ajuste de Cantidad */}
+            <CModal visible={visibleAdjust} onClose={() => setVisibleAdjust(false)}>
+                <CModalHeader onClose={() => setVisibleAdjust(false)}>
+                    <CModalTitle>Ajustar Cantidad - Componente #{selectedId}</CModalTitle>
+                </CModalHeader>
+                <CModalBody className="text-center">
+                    <div className="mb-4">
+                        <CButton 
+                            color="success" 
+                            size="lg" 
+                            className="me-3"
+                            onClick={() => handleAdjust('increase')}
+                            disabled={loadingAdjust}
+                        >
+                            ➕ Aumentar
+                        </CButton>
+                        <CButton 
+                            color="danger" 
+                            size="lg"
+                            onClick={() => handleAdjust('decrease')}
+                            disabled={loadingAdjust}
+                        >
+                            ➖ Restar
+                        </CButton>
+                    </div>
+                    <div className="mb-3">
+                        <label className="form-label">Cantidad a ajustar:</label>
+                        <CFormInput 
+                            type="number" 
+                            value={deltaInput}
+                            onChange={(e) => setDeltaInput(Math.abs(parseInt(e.target.value) || 1))}
+                            min="1"
+                            max="999"
+                            className="w-25 mx-auto"
+                            disabled={loadingAdjust}
+                        />
+                    </div>
+                    <small className="text-muted">Usa los botones ➕/➖ o ajusta el número arriba.</small>
+                </CModalBody>
+                <CModalFooter>
+                    <CButton color="secondary" onClick={() => setVisibleAdjust(false)} disabled={loadingAdjust}>
+                        Cancelar
+                    </CButton>
+                </CModalFooter>
             </CModal>
         </div>
     );

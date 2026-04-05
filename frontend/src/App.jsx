@@ -8,6 +8,7 @@ import Buscador from './pages/Buscador';
 import Ubicaciones from './pages/Ubicaciones';
 import Componentes from './pages/Componentes';
 import TiposComponentes from './pages/TiposComponentes';
+import Dashboard from './pages/Dashboard';
 
 export default function App() {
     const [currentModule, setCurrentModule] = useState('welcome');
@@ -37,6 +38,7 @@ export default function App() {
             {!loading && currentModule === 'buscador' && <Buscador />}
             {!loading && currentModule === 'componentes' && <Componentes />}
             {!loading && currentModule === 'tipos-componentes' && <TiposComponentes />}
+            {!loading && currentModule === 'dashboard' && <Dashboard />}
             {!loading && currentModule === 'ubicaciones' && <Ubicaciones />}
         </div>
     );

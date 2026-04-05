@@ -13,6 +13,14 @@ export default function Nav({ currentModule, setModule }) {
                 </CNavbarBrand>
 
                 <div className="app-nav-links">
+
+                    <button
+                        type="button"
+                        className={`app-nav-link ${currentModule === 'dashboard' ? 'active' : ''}`}
+                        onClick={() => setModule('dashboard')}
+                    >
+                        Dashboard
+                    </button>
                     <button
                         type="button"
                         className={`app-nav-link ${currentModule === 'buscador' ? 'active' : ''}`}

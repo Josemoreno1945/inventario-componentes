@@ -1,0 +1,1 @@
+# Task: Center dashboard titles for tops and low stock ✅\n\n## Steps:\n- [x] 1. Confirm understanding and create edit plan ✅\n- [x] 2. Edit frontend/src/pages/Dashboard.scss to center h2 titles ✅\n- [x] 3. Test in browser (cd frontend && npm run dev) ✅\n- [x] 4. Complete task ✅
