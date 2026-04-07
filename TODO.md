@@ -1,39 +1,15 @@
-# TODO.md - Pasos para Desplegar Proyecto en Netlify (Frontend) y Render (Backend)
+# Fix CORS and API URL Issues for Deployed App
 
-## Estado: [En Progreso]
+## Steps:
 
-### 1. [✅ COMPLETADO] Crear archivos de configuración
+- [x] 1. Create this TODO.md from approved plan.
+- [x] 2. Edit frontend/netlify.toml to set correct VITE_API_URL = "https://inventario-componentes.onrender.com"
 
-- `frontend/src/config.js`
-- `frontend/netlify.toml`
-- `render.yaml` (raíz)
-- `.env.example`
+- [ ] 3. Optional: Update config.js comment.
+- [ ] 4. Test locally: npm run build (frontend) and serve dist/, check fetches in devtools.
+- [ ] 5. Redeploy frontend to Netlify (git push or drag dist/).
+- [ ] 6. Verify live site: https://inventarioenwebxd.netlify.app - API calls should succeed without CORS errors.
+- [ ] 7. If backend issues, deploy to Render via dashboard/git.
+- [ ] 8. Mark complete and remove TODO.md.
 
-### 2. [✅ COMPLETADO] Editar Backend
-
-- `backend/index.js` (puerto dinámico)
-- `backend/package.json` (script start)
-
-### 3. [✅ COMPLETADO] Editar Frontend Config
-
-- `frontend/vite.config.js` (base)
-
-### 4. [✅ COMPLETADO] Actualizar URLs API en Frontend Pages
-
-- `frontend/src/pages/Ubicaciones.jsx` ✅
-- `frontend/src/pages/TiposComponentes.jsx` ✅
-- `frontend/src/pages/Buscador.jsx` ✅
-- `frontend/src/pages/Componentes.jsx` ✅
-- `frontend/src/pages/Dashboard.jsx` ✅
-
-### 5. [🔧 FIXED] better-sqlite3 aplicado. Push GitHub y re-deploy Render.
-
-### 6. [PENDIENTE] Build frontend
-
-### 7. [PENDIENTE] Deploy Frontend Netlify
-
-### 8. [PENDIENTE] Deploy Backend Render
-
-### 9. [COMPLETADO] Test end-to-end
-
-_SQLite ok para Render (persistente vía volumes). Repo GitHub recomendado para auto-deploy._
+Current status: Starting edits...
