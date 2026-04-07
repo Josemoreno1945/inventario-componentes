@@ -1,0 +1,49 @@
+/* Contenedor padre del dropdown */
+.app-nav-dropdown-wrapper {
+  position: relative;
+  display: inline-block;
+  // Esto asegura que el área de detección sea un bloque sólido
+}
+
+/* El menú que aparece */
+.app-nav-dropdown-menu {
+  position: absolute;
+  top: 100%; // Justo debajo del botón
+  left: 0;
+  z-index: 1000;
+  min-width: 180px;
+  background-color: #0d1117; // Fondo oscuro como el resto
+  border: 1px solid rgba(100, 231, 255, 0.2);
+  border-radius: 8px;
+  padding: 8px 0;
+  margin: 0;
+  box-shadow: 0 8px 16px rgba(0,0,0,0.5);
+
+  /* TRUCO CLAVE: Un pseudo-elemento que une el botón con el menú */
+  &::before {
+    content: "";
+    position: absolute;
+    top: -15px; // Cubre el hueco de arriba
+    left: 0;
+    right: 0;
+    height: 15px;
+    background: transparent;
+  }
+}
+
+/* Estilo para los items del dropdown */
+.app-nav-dropdown-item {
+  width: 100%;
+  padding: 10px 20px;
+  background: none;
+  border: none;
+  color: #8b949e;
+  text-align: left;
+  cursor: pointer;
+  transition: all 0.2s;
+
+  &:hover {
+    background-color: rgba(100, 231, 255, 0.1);
+    color: #64e7ff;
+  }
+}

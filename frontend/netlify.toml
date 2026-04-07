@@ -1,0 +1,10 @@
+[build]
+  command = "npm run build"
+  publish = "dist"
+  environment = { VITE_API_URL = "https://tu-backend.onrender.com" }
+
+[[redirects]]
+  from = "/*"
+  to = "/index.html"
+  status = 200
+

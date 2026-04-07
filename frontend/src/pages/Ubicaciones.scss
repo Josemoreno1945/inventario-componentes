@@ -1,0 +1,135 @@
+// Ubicaciones.scss
+
+.clase-ubicaciones {
+  // 1. LA TARJETA (CARD) QUE CONTIENE LA LISTA
+  .card {
+    background-color: #0d1117 !important; // Fondo oscuro tipo GitHub
+    border: 1px solid rgba(100, 231, 255, 0.3) !important; // Borde neón sutil
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+    color: #ffffff;
+
+    .card-body {
+      background: transparent !important;
+    }
+  }
+
+  // 2. LA TABLA
+  .table {
+    color: #e6edf3 !important;
+    --cui-table-bg: transparent !important;
+    --cui-table-border-color: rgba(100, 231, 255, 0.1) !important;
+
+    thead th {
+      background-color: rgba(100, 231, 255, 0.05) !important;
+      color: #64e7ff !important; // Azul neón para cabeceras
+      border-bottom: 2px solid rgba(100, 231, 255, 0.2) !important;
+      text-transform: uppercase;
+      font-size: 0.8rem;
+    }
+
+    tbody td {
+      background: transparent !important;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.05) !important;
+    }
+
+    // Efecto de fila al pasar el mouse
+    tr:hover td {
+      background-color: rgba(100, 231, 255, 0.03) !important;
+      color: #ffffff !important;
+    }
+  }
+
+  // Estilo para la "Ruta Completa"
+  .text-primary.font-monospace {
+    color: #64e7ff !important;
+    background: rgba(100, 231, 255, 0.1);
+    padding: 2px 6px;
+    border-radius: 4px;
+  }
+
+  // 3. EL MODAL (NUEVA UBICACIÓN)
+  // Nota: CoreUI renderiza el modal fuera del div a veces, 
+  // si no cambia, quita el ".clase-ubicaciones" antes de estas reglas.
+}
+
+// Estilos para el Modal y Formulario (Fuera del container por si acaso)
+.modal-content {
+  background-color: #0d1117 !important;
+  border: 1px solid #64e7ff !important;
+  color: #ffffff !important;
+}
+
+.modal-header, .modal-footer {
+  border-color: rgba(100, 231, 255, 0.1) !important;
+  .modal-title { color: #64e7ff !important; }
+  .btn-close { filter: invert(1); } // X blanca
+}
+
+.form-control {
+  background-color: #161b22 !important;
+  border: 1px solid rgba(100, 231, 255, 0.2) !important;
+  color: #ffffff !important;
+
+  &:focus {
+    border-color: #64e7ff !important;
+    box-shadow: 0 0 8px rgba(100, 231, 255, 0.4) !important;
+  }
+}
+
+.form-label {
+  color: #8b949e !important;
+}
+
+.clase-ubicaciones .table tbody td,
+.clase-ubicaciones .table tbody td * {
+  color: #ffffff !important;
+}
+
+.clase-ubicaciones .form-control::placeholder,
+.modal-content .form-control::placeholder {
+  color: rgba(255, 255, 255, 0.4) !important;
+}
+
+.clase-ubicaciones .form-control,
+.modal-content .form-control {
+  color: #ffffff !important;
+}
+
+/* Estilo para el botón Agregar Ubicación */
+.clase-ubicaciones .btn-primary {
+  // Colores base (oscuros con borde neón)
+  background: rgba(100, 231, 255, 0.1) !important;
+  border: 1px solid rgba(100, 231, 255, 0.5) !important;
+  color: #64e7ff !important;
+  
+  // Forma y tipografía
+  border-radius: 8px !important;
+  font-weight: 600;
+  padding: 8px 20px;
+  transition: all 0.3s ease-in-out;
+  text-transform: uppercase;
+  font-size: 0.85rem;
+  letter-spacing: 0.5px;
+
+  // Efecto Hover (Brillo)
+  &:hover {
+    background: rgba(100, 231, 255, 0.2) !important;
+    border-color: #64e7ff !important;
+    color: #ffffff !important;
+    box-shadow: 0 0 15px rgba(100, 231, 255, 0.4) !important;
+    transform: translateY(-1px);
+  }
+
+  // Efecto Click
+  &:active {
+    transform: translateY(1px);
+    box-shadow: 0 0 5px rgba(100, 231, 255, 0.2) !important;
+  }
+}
+
+/* Arreglo para el contenedor de la cabecera */
+.clase-ubicaciones h2 {
+  font-size: 1.5rem;
+  color: #ffffff;
+  margin-bottom: 0;
+}
