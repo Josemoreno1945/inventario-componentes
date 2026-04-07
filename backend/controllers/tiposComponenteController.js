@@ -1,41 +1,45 @@
-import TiposComponenteModel from '../models/tiposComponenteModel.js';
+import TiposComponenteModel from "../models/tiposComponenteModel.js";
 
 export const getTiposComponentes = (req, res) => {
-    TiposComponenteModel.getAll((err, rows) => {
-        if (err) return res.status(500).json({ error: err.message });
-        res.json(rows);
-    });
+  try {
+    const rows = TiposComponenteModel.getAll();
+    res.json(rows);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
 };
 
 export const getTipoComponenteById = (req, res) => {
+  try {
     const { id } = req.params;
-    TiposComponenteModel.getById(id, (err, row) => {
-        if (err) return res.status(500).json({ error: err.message });
-        if (!row) return res.status(404).json({ error: 'Tipo de componente no encontrado' });
-        res.json(row);
-    });
+    const row = TiposComponenteModel.getById(parseInt(id));
+    if (!row)
+      return res
+        .status(404)
+        .json({ error: "Tipo de componente no encontrado" });
+    res.json(row);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
 };
 
-export const createTipoComponente = (req, res, next) => {
-  const data = req.validatedBody;
-  TiposComponenteModel.create(data, function(err) {
-    if (err) return next(err);
-    res.json({ id: this.lastID, ...data });
-  });
+export const createTipoComponente = (req, res) => {
+  try {
+    const data = req.validatedBody || req.body;
+    const result = TiposComponenteModel.create(data);
+    res.status(201).json(result);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
 };
 
-export const updateTipoComponente = (req, res, next) => {
-  const { id } = req.params;
-  const data = req.validatedBody;
-  TiposComponenteModel.update(id, data, function(err) {
-    if (err) return next(err);
-    if (this.changes === 0) return res.status(404).json({ error: 'Tipo de componente no encontrado' });
-    res.json({ id, ...data });
-  });
+export const updateTipoComponente = (req, res) => {
+  try {
+    const { id } = req.params;
+    const data = req.validatedBody || req.body;
+    const result = TiposComponenteModel.update(parseInt(id), data);
+    res.json(result);
+  } catch (err) {
+    res.status(400).json({ error: err.message });
+  }
 };
-
-
-
-
-
-

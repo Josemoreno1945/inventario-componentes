@@ -1,66 +1,88 @@
-import db from '../config/database.js';
+import db from "../config/new-database.js";
 
 const ComponenteModel = {
-    // Obtener todos los componentes
-    getAll: (callback) => {
-        const sql = 'SELECT c.*, tc.nombre AS tipo, u.pasillo, u.estante, u.caja FROM componentes c JOIN tipos_componentes tc ON c.tipo_id = tc.id JOIN ubicaciones u ON c.ubicacion_id = u.id';
-        db.all(sql, [], callback);
-    },
+  // Obtener todos los componentes
+  getAll: () => {
+    const sql =
+      "SELECT c.*, tc.nombre AS tipo, u.pasillo, u.estante, u.caja FROM componentes c JOIN tipos_componentes tc ON c.tipo_id = tc.id JOIN ubicaciones u ON c.ubicacion_id = u.id";
+    return db.prepare(sql).all();
+  },
 
-    // Crear un nuevo componente
-    create: (data, callback) => {
-        const { tipo_id, marca_modelo, interfaz, capacidad, cantidad, ubicacion_id } = data;
-        const sql = 'INSERT INTO componentes (tipo_id, marca_modelo, interfaz, capacidad, cantidad, ubicacion_id) VALUES (?, ?, ?, ?, ?, ?)';
-        db.run(sql, [tipo_id, marca_modelo, interfaz, capacidad, cantidad, ubicacion_id], callback);
-    },
+  // Crear un nuevo componente
+  create: (data) => {
+    const {
+      tipo_id,
+      marca_modelo,
+      interfaz,
+      capacidad,
+      cantidad,
+      ubicacion_id,
+    } = data;
+    const sql =
+      "INSERT INTO componentes (tipo_id, marca_modelo, interfaz, capacidad, cantidad, ubicacion_id) VALUES (?, ?, ?, ?, ?, ?)";
+    const result = db
+      .prepare(sql)
+      .run(tipo_id, marca_modelo, interfaz, capacidad, cantidad, ubicacion_id);
+    return { id: result.lastInsertRowid, ...data };
+  },
 
-    // Actualizar cantidad (aumentar o restar)
-    updateCantidad: (id, delta, callback) => {
-        const sql = 'UPDATE componentes SET cantidad = cantidad + ? WHERE id = ? AND cantidad + ? >= 0';
-        db.run(sql, [delta, id, delta], function(err) {
-            if (err) {
-                return callback(err);
-            }
-            if (this.changes === 0) {
-                return callback(new Error('Componente no encontrado o cantidad no puede ser negativa'));
-            }
-            // Obtener el componente actualizado
-            db.get('SELECT * FROM componentes WHERE id = ?', [id], (err, row) => {
-                if (err) return callback(err);
-                callback(null, row);
-            });
-        });
-    },
+  // Actualizar cantidad (aumentar o restar)
+  updateCantidad: (id, delta) => {
+    const sql =
+      "UPDATE componentes SET cantidad = cantidad + ? WHERE id = ? AND cantidad + ? >= 0";
+    const result = db.prepare(sql).run(delta, id, delta);
+    if (result.changes === 0) {
+      throw new Error(
+        "Componente no encontrado o cantidad no puede ser negativa",
+      );
+    }
+    const componente = db
+      .prepare("SELECT * FROM componentes WHERE id = ?")
+      .get(id);
+    return componente;
+  },
 
-    // Actualizar componente completo
-    update: (id, data, callback) => {
-        const { tipo_id, marca_modelo, interfaz, capacidad, cantidad, ubicacion_id } = data;
-        const sql = `UPDATE componentes SET 
+  // Actualizar componente completo
+  update: (id, data) => {
+    const {
+      tipo_id,
+      marca_modelo,
+      interfaz,
+      capacidad,
+      cantidad,
+      ubicacion_id,
+    } = data;
+    const sql = `UPDATE componentes SET 
             tipo_id = ?, marca_modelo = ?, interfaz = ?, capacidad = ?, 
             cantidad = ?, ubicacion_id = ? WHERE id = ?`;
-        db.run(sql, [tipo_id, marca_modelo, interfaz, capacidad, cantidad, ubicacion_id, id], function(err) {
-            if (err) return callback(err);
-            if (this.changes === 0) {
-                return callback(new Error('Componente no encontrado'));
-            }
-            db.get('SELECT * FROM componentes WHERE id = ?', [id], (err, row) => {
-                if (err) return callback(err);
-                callback(null, row);
-            });
-        });
-    },
-
-    // Eliminar componente
-    delete: (id, callback) => {
-        const sql = 'DELETE FROM componentes WHERE id = ?';
-        db.run(sql, [id], function(err) {
-            if (err) return callback(err);
-            if (this.changes === 0) {
-                return callback(new Error('Componente no encontrado'));
-            }
-            callback(null, { id, deleted: true });
-        });
+    const result = db
+      .prepare(sql)
+      .run(
+        tipo_id,
+        marca_modelo,
+        interfaz,
+        capacidad,
+        cantidad,
+        ubicacion_id,
+        id,
+      );
+    if (result.changes === 0) {
+      throw new Error("Componente no encontrado");
     }
+    const componente = db
+      .prepare("SELECT * FROM componentes WHERE id = ?")
+      .get(id);
+    return componente;
+  },
+
+  // Eliminar componente
+  delete: (id) => {
+    const result = db.prepare("DELETE FROM componentes WHERE id = ?").run(id);
+    if (result.changes === 0) {
+      throw new Error("Componente no encontrado");
+    }
+    return { id, deleted: true };
+  },
 };
 
 export default ComponenteModel;

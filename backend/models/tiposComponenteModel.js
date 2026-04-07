@@ -1,37 +1,33 @@
-import db from '../config/database.js';
+import db from "../config/new-database.js";
 
 const TiposComponenteModel = {
+  // Obtener todos los tipos de componentes
+  getAll: () => {
+    const sql = "SELECT * FROM tipos_componentes";
+    return db.prepare(sql).all();
+  },
 
+  // Obtener un tipo por ID
+  getById: (id) => {
+    const sql = "SELECT * FROM tipos_componentes WHERE id = ?";
+    return db.prepare(sql).get(id);
+  },
 
+  // Crear un nuevo tipo de componente
+  create: (data) => {
+    const { nombre } = data;
+    const sql = "INSERT INTO tipos_componentes (nombre) VALUES (?)";
+    const result = db.prepare(sql).run(nombre);
+    return { id: result.lastInsertRowid, nombre };
+  },
 
-    // Obtener todos los tipos de componentes
-    getAll: (callback) => {
-        const sql = 'SELECT * FROM tipos_componentes';
-        db.all(sql, [], callback);
-    },
-
-    // Obtener un tipo por ID
-    getById: (id, callback) => {
-        const sql = 'SELECT * FROM tipos_componentes WHERE id = ?';
-        db.get(sql, [id], callback);
-    },
-
-    // Crear un nuevo tipo de componente
-    create: (data, callback) => {
-        const { nombre } = data;
-        const sql = 'INSERT INTO tipos_componentes (nombre) VALUES (?)';
-        db.run(sql, [nombre], callback);
-    },
-
-    // Actualizar tipo de componente
-    update: (id, data, callback) => {
-        const { nombre } = data;
-        const sql = 'UPDATE tipos_componentes SET nombre = ? WHERE id = ?';
-        db.run(sql, [nombre, id], callback);
-    },
-
-    
-
+  // Actualizar tipo de componente
+  update: (id, data) => {
+    const { nombre } = data;
+    const sql = "UPDATE tipos_componentes SET nombre = ? WHERE id = ?";
+    const result = db.prepare(sql).run(nombre, id);
+    return { id, ...data };
+  },
 };
 
 export default TiposComponenteModel;

@@ -1,16 +1,20 @@
-import UbicacionModel from '../models/ubicacionModel.js';
+import UbicacionModel from "../models/ubicacionModel.js";
 
 export const getUbicaciones = (req, res) => {
-    UbicacionModel.getAll((err, rows) => {
-        if (err) return res.status(500).json({ error: err.message });
-        res.json(rows);
-    });
+  try {
+    const rows = UbicacionModel.getAll();
+    res.json(rows);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
 };
 
-export const createUbicacion = (req, res, next) => {
-  const data = req.validatedBody;
-  UbicacionModel.create(data, function(err) {
-    if (err) return next(err);
-    res.json({ id: this.lastID, ...data });
-  });
+export const createUbicacion = (req, res) => {
+  try {
+    const data = req.validatedBody || req.body;
+    const result = UbicacionModel.create(data);
+    res.status(201).json(result);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
 };
