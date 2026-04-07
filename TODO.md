@@ -26,7 +26,7 @@
 - `frontend/src/pages/Componentes.jsx` ✅
 - `frontend/src/pages/Dashboard.jsx` ✅
 
-### 5. [✅ COMPLETADO] Instalar dependencias (ejecuta manualmente si error: cd backend && npm i ; cd ../frontend && npm i) y test local
+### 5. [🔧 FIXED] better-sqlite3 aplicado. Push GitHub y re-deploy Render.
 
 ### 6. [PENDIENTE] Build frontend
 
